@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {Button} from './Button'
+import './NavBar.css'
 
 export function NavBar() {
   const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true)
 
   const handleClick = () => {
     setClick(!click);
@@ -10,11 +13,26 @@ export function NavBar() {
 
   const closeMobileMenu = () => setClick(false);
 
+  const showButton = () => {
+      if(window.innerWidth <= 960) {
+          setButton(false)
+      } else {
+          setButton(true)
+      }
+  }
+
+  useEffect(() => {
+    showButton();
+  }, []);
+
+
+  window.addEventListener('rezize', showButton)
+
   return (
     <>
-      <nav className="navBar">
+      <nav className="navbar">
         <div className="navbar-container">
-          <Link to="/" className="navbar-logo">
+        <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
             TRLV
             <i className={"fas fa-times"} />
           </Link>
@@ -44,6 +62,7 @@ export function NavBar() {
             </li>
           </ul>
         </div>
+        {button &&  <Button buttonStyle="btn--outline">Sign Up</Button> }
       </nav>
     </>
   );
